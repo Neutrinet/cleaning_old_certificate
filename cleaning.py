@@ -36,7 +36,7 @@ for i in glob.glob('/home/tharyrok/developpement/neutrinet/cert/*.crt'):
         'serial': str(cert.serial_number),
         'end_date': cert.not_valid_after,
         'file': i
-                      })
+    })
 
 #
 #  Clean user is bdd and not ldap
@@ -48,8 +48,6 @@ for i in result:
     res = l.search_s("ou=Users,dc=neutrinet,dc=be", ldap.SCOPE_SUBTREE, "(uid=" + str(i["userId"]) + ")")
     if len(res) < 1:
         db.execute('DELETE FROM ovpn_clients WHERE "userId" = \'%s\';' % str(i["userId"]))
-
-
 
 #
 # clean serial is bbd and not server
@@ -77,8 +75,7 @@ for cert in certificates:
 
     if result is 0:
         try:
-            #os.remove(cert.file)
-            print(cert['file'])
+            os.remove(cert.file)
         except FileNotFoundError:
             pass
 
@@ -115,7 +112,6 @@ result = db.prepare(
 for i in result:
     db.execute('UPDATE address_pool SET client_id = -1 WHERE id = %s' % i["id"])
 
-
 #
 # Clean old certificate for member if one certificate valid
 #
@@ -149,15 +145,15 @@ for client, certs_for_member in member_list_serial.items():
                 break
             if end_date['end_date'] >= datetime.datetime.now():
                 # delete other certificate
-                print('DELETE FROM certificates WHERE client_id=%d AND NOT serial=\'%s\';' % (client, cert_for_member))
+                db.execute(
+                    'DELETE FROM certificates WHERE client_id=%d AND NOT serial=\'%s\';' % (client, cert_for_member))
                 for cert_old_for_member in certs_for_member:
                     if cert_old_for_member is not cert_for_member:
                         try:
                             try:
-                                #os.remove(
-                                #    [element for element in certificates if element['serial'] == cert_old_for_member][
-                                #        0]['file'])
-                                print([element for element in certificates if element['serial'] == cert_old_for_member][0]['file'])
+                                os.remove(
+                                    [element for element in certificates if element['serial'] == cert_old_for_member][
+                                        0]['file'])
                             except IndexError:
                                 pass
                         except FileNotFoundError:
@@ -217,13 +213,14 @@ for user_id, serials in member_list_serial.items():
 
     if res:
         if end_180 and not (end_90 or valid):
-            print('L\'user %s à un certificat qui à expiré %s' % (res[0][1]['mail'][0].decode("utf-8"), (datetime.datetime.now() - end_180)))
+            print('L\'user %s à un certificat qui à expiré %s' % (
+            res[0][1]['mail'][0].decode("utf-8"), (datetime.datetime.now() - end_180)))
 
         if end_90 and not valid:
-            print('L\'user %s à un certificat qui va expiré %s' % (res[0][1]['mail'][0].decode("utf-8"), (end_90 - datetime.datetime.now())))
+            print('L\'user %s à un certificat qui va expiré %s' % (
+            res[0][1]['mail'][0].decode("utf-8"), (end_90 - datetime.datetime.now())))
 
         if valid:
             print('L\'user %s n\'à pas un certificat qui va expiré %s' % (res[0][1]['mail'][0].decode("utf-8"), valid))
 
 l.unbind()
-
