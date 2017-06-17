@@ -46,8 +46,8 @@ result = db.prepare('SELECT ovpn_clients."userId" FROM public.ovpn_clients')
 
 for i in result:
     res = l.search_s("ou=Users,dc=neutrinet,dc=be", ldap.SCOPE_SUBTREE, "(uid=" + str(i["userId"]) + ")")
-    if len(res) != 1:
-        db.execute("DELETE FROM ovpn_clients WHERE 'userId' = '%s';" % str(i["userId"]))
+    if len(res) < 1:
+        db.execute('DELETE FROM ovpn_clients WHERE "userId" = \'%s\';' % str(i["userId"]))
 
 
 
@@ -209,13 +209,21 @@ for user_id, serials in member_list_serial.items():
         else:
             valid = end_date
 
-    if end_180 and not (end_90 or valid):
-        print('L\'user %s à un certificat qui à expiré %s' % (user_id, (datetime.datetime.now() - end_180)))
+    res = l.search_s(
+        "ou=Users,dc=neutrinet,dc=be",
+        ldap.SCOPE_SUBTREE,
+        "(uid=" + str(user_id) + ")",
+    )
 
-    if end_90 and not valid:
-        print('L\'user %s à un certificat qui va expiré %s' % (user_id, (end_90 - datetime.datetime.now())))
+    if res:
+        if end_180 and not (end_90 or valid):
+            print('L\'user %s à un certificat qui à expiré %s' % (res[0][1]['mail'][0].decode("utf-8"), (datetime.datetime.now() - end_180)))
 
-    if valid:
-        print('L\'user %s n\'à pas un certificat qui va expiré %s' % (user_id, valid))
+        if end_90 and not valid:
+            print('L\'user %s à un certificat qui va expiré %s' % (res[0][1]['mail'][0].decode("utf-8"), (end_90 - datetime.datetime.now())))
+
+        if valid:
+            print('L\'user %s n\'à pas un certificat qui va expiré %s' % (res[0][1]['mail'][0].decode("utf-8"), valid))
+
 l.unbind()
 
