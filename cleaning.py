@@ -73,8 +73,8 @@ for cert in certificates:
             'public.certificates, public.address_pool '
         'WHERE '
             'address_pool.client_id = certificates.client_id AND '
-            'certificates.serial=\'%s\';' % cert['serial']
-    ).first()
+            'certificates.serial=\'%s\';' % cert['serial']).first()
+
     if result is 0:
         try:
             #os.remove(cert.file)
@@ -115,29 +115,107 @@ result = db.prepare(
 for i in result:
     db.execute('UPDATE address_pool SET client_id = -1 WHERE id = %s' % i["id"])
 
+
 #
 # Clean old certificate for member if one certificate valid
 #
 
-serials_not_expire = []
-serial_expire = []
-all_serial_members = {}
+member_list_serial = {}
 
-for i in glob.glob('/opt/ispng/ca/store/*.crt'):
-    cert = x509.load_pem_x509_certificate(open(i, "rb").read(), default_backend())
-    # on trouve les certificats expirer
-    if cert.not_valid_after <= datetime.datetime.now():
-        # On recupere tout les seriel du membre
-        results = db.prepare(
-            'SELECT serial FROM certificates WHERE client_id=(SELECT client_id FROM certificates WHERE certificates.serial=\'%s\');' % cert.serial_number)
-        for result in results:
-            if str(result['serial']) in serials_not_expire:
-                # le membre a au moins un certificat valid
-                # On supprime le ficher et l'entrée dans la bdd
-                db.execute('DELETE FROM certificates WHERE id = %d;' % cert.serial_number)
-                try:
-                    os.remove(i)
-                except FileNotFoundError:
-                    pass
+results = db.prepare('SELECT '
+                        'certificates.serial, '
+                        'certificates.client_id '
+                     'FROM '
+                        'public.certificates,'
+                        'public.ovpn_clients '
+                     'WHERE '
+                        'certificates.client_id = ovpn_clients.id')
+
+# restructure result
+for i in results:
+    if i['client_id'] in member_list_serial:
+        member_list_serial[i['client_id']].append(i['serial'])
+    else:
+        member_list_serial[i['client_id']] = []
+        member_list_serial[i['client_id']].append(i['serial'])
+
+for client, certs_for_member in member_list_serial.items():
+    if len(certs_for_member) > 1:
+        for cert_for_member in certs_for_member:
+            # find certificate not expire
+            try:
+                end_date = [element for element in certificates if element['serial'] == cert_for_member][0]
+            except IndexError:
+                break
+            if end_date['end_date'] >= datetime.datetime.now():
+                # delete other certificate
+                print('DELETE FROM certificates WHERE client_id=%d AND NOT serial=\'%s\';' % (client, cert_for_member))
+                for cert_old_for_member in certs_for_member:
+                    if cert_old_for_member is not cert_for_member:
+                        try:
+                            try:
+                                #os.remove(
+                                #    [element for element in certificates if element['serial'] == cert_old_for_member][
+                                #        0]['file'])
+                                print([element for element in certificates if element['serial'] == cert_old_for_member][0]['file'])
+                            except IndexError:
+                                pass
+                        except FileNotFoundError:
+                            pass
+
+#
+# Find member for certificate expire to 90 days and expire for 180 days
+#
+
+member_list_serial = {}
+
+results = db.prepare('SELECT '
+                        'certificates.serial, '
+                        'ovpn_clients."userId" '
+                     'FROM '
+                        'public.certificates,'
+                        'public.ovpn_clients '
+                     'WHERE '
+                        'certificates.client_id = ovpn_clients.id')
+
+# restructure result
+for i in results:
+    if i['userId'] in member_list_serial:
+        member_list_serial[i['userId']].append(i['serial'])
+    else:
+        member_list_serial[i['userId']] = []
+        member_list_serial[i['userId']].append(i['serial'])
+
+for user_id, serials in member_list_serial.items():
+    end_180 = False
+    end_90 = False
+    valid = False
+
+    for serial in serials:
+        try:
+            end_date = [element for element in certificates if element['serial'] == serial][0]['end_date']
+        except IndexError:
+            break
+
+        if end_date <= (datetime.datetime.now() - datetime.timedelta(days=180)):
+            end_180 = end_date
+
+        elif end_date <= datetime.datetime.now():
+            end_180 = end_date
+
+        elif end_date <= (datetime.datetime.now() + datetime.timedelta(days=90)):
+            end_90 = end_date
+
+        else:
+            valid = end_date
+
+    if end_180 and not (end_90 or valid):
+        print('L\'user %s à un certificat qui à expiré %s' % (user_id, (datetime.datetime.now() - end_180)))
+
+    if end_90 and not valid:
+        print('L\'user %s à un certificat qui va expiré %s' % (user_id, (end_90 - datetime.datetime.now())))
+
+    if valid:
+        print('L\'user %s n\'à pas un certificat qui va expiré %s' % (user_id, valid))
 l.unbind()
 
