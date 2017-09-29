@@ -146,22 +146,23 @@ results = db.prepare('SELECT '
 
 # Remove certificate not in the server
 for result in results:
-    cert = next((item for item in certificates if item.get("serial") and item["serial"] == result['serial']), None)
-    if not cert:
+    cert_present_on_server = next((item for item in certificates if item.get("serial") and item["serial"] == result['serial']), None)
+    if not cert_present_on_server:
         # delete other certificate
         db.execute(
             'DELETE FROM certificates WHERE serial=\'%s\';' % (str(result['serial'])))
-        print('Remove %s', str(result['serial']))
+        print('Removing certificate with serial %s from DB since it is absent from the server', str(result['serial']))
     else:
-        cert['user_id'] = result['userId']
+        # Cert is present on both the server and the DB --> we add the associated serial to to the member_list_serial (as a list - one per client)
+        cert_present_on_server['user_id'] = result['userId']
 
         if result['client_id'] in member_list_serial:
-            member_list_serial[result['client_id']].append(cert)
+            member_list_serial[result['client_id']].append(cert_present_on_server)
         else:
             member_list_serial[result['client_id']] = []
-            member_list_serial[result['client_id']].append(cert)
+            member_list_serial[result['client_id']].append(cert_present_on_server)
 
-# Remove multiples certificates
+# Remove multiples certificates 
 for members in member_list_serial:
     if len(member_list_serial[members]) > 1:
         last = datetime.datetime.fromtimestamp(1)
