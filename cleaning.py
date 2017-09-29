@@ -39,9 +39,9 @@ for i in glob.glob('/home/tharyrok/developpement/neutrinet/cert/*.crt'):
     })
 
 #
-#  Clean user is bdd and not ldap
+#  Clean users who are present in the db but not in ldap
 #
-print('Clean user is bdd and not ldap')
+print('Cleaning users who are present in the db but not in ldap')
 
 result = db.prepare('SELECT ovpn_clients."userId" FROM public.ovpn_clients')
 
@@ -49,12 +49,12 @@ for i in result:
     res = l.search_s("ou=Users,dc=neutrinet,dc=be", ldap.SCOPE_SUBTREE, "(uid=" + str(i["userId"]) + ")")
     if len(res) < 1:
         db.execute('DELETE FROM ovpn_clients WHERE "userId" = \'%s\';' % str(i["userId"]))
-        print('Remove %s', str(i["userId"]))
+        print('Removing %s from database, as \(s\)he was absent from LDAP)', str(i["userId"]))
 
 #
 # clean serial is bbd and not server
 #
-print('clean serial is bbd and not server')
+print('Cleaning serials from DB that are not found on the server\'s filesystem as well')
 
 
 results = db.prepare('SELECT certificates.serial, certificates.id FROM public.certificates')
@@ -63,12 +63,12 @@ for result in results:
     i = next((item for item in certificates if item.get("serial") and item["serial"] == result['serial']), None)
     if not i:
         db.execute('DELETE FROM certificates WHERE id = %d;' % result["id"])
-        print('Remove %s', str(result["id"]))
+        print('Removing %s\'s certificate from the DB, as its serial is not present on the server\'s file system', str(result["id"]))
 
 #
 # clean certificate not associate ip
 #
-print('Clean certificate not associate ip')
+print('Cleaning certificates that are not associated with an ip')
 
 
 for cert in certificates:
@@ -84,7 +84,7 @@ for cert in certificates:
     if result is 0:
         try:
             os.remove(cert['file'])
-            print('Remove %s', str(cert['file']))
+            print('Removing %s from the file system, as it is not associated with any ip', str(cert['file']))
 
         except FileNotFoundError:
             pass
@@ -92,7 +92,7 @@ for cert in certificates:
 #
 # Liberate ip is not associate member
 #
-print('Liberate ip is not associate member')
+print('Liberating IPv4 adresses that are not associated with any existing member')
 
 results = db.prepare(
     'SELECT '
@@ -106,16 +106,16 @@ results = db.prepare(
 
 for i in results:
     db.execute('UPDATE address_pool SET client_id = -1 WHERE id = %s' % i["id"])
-    print('Remove %s', str(i["id"]))
+    print('Removing address %s as it is not associated with any member existing in DB', str(i["id"]))
 
 #
 # Liberate ip is not associate certificate
 #
-print('Liberate ip is not associate certificate')
+print('Liberating IP addresses that are not associated with any certificate')
 
 result = db.prepare(
     'SELECT '
-        'id '
+       'id '
     'FROM '
         'address_pool '
     'WHERE '
@@ -125,12 +125,12 @@ result = db.prepare(
 
 for i in result:
     db.execute('UPDATE address_pool SET client_id = -1 WHERE id = %s' % i["id"])
-    print('Remove %s', str(i["id"]))
+    print('Removing address with id %s as it had no corresponding certificate in DB', str(i["id"]))
 
 #
 # Clean old certificate for member if one certificate valid
 #
-print('Clean old certificate for member if one certificate valid')
+print('Cleaning expired certificates when the member still has at least one valid certificate')
 
 member_list_serial = {}
 results = db.prepare('SELECT '
@@ -161,7 +161,7 @@ for result in results:
             member_list_serial[result['client_id']] = []
             member_list_serial[result['client_id']].append(cert)
 
-# Remove multi certificatr
+# Remove multiples certificates
 for members in member_list_serial:
     if len(member_list_serial[members]) > 1:
         last = datetime.datetime.fromtimestamp(1)
@@ -219,15 +219,15 @@ for user_id, serials in member_list_serial.items():
 
     if res:
         if end_180 and not (end_90 or valid):
-            print('L\'user %s à un certificat qui à expiré %s :: %s' % (
+            print('L\'utilisateur %s a un certificat qui a expiré %s :: %s' % (
             res[0][1]['mail'][0].decode("utf-8"), (datetime.datetime.now() - end_180), serial_end_180))
 
         if end_90 and not valid:
-            print('L\'user %s à un certificat qui va expiré %s :: %s' % (
+            print('L\'utilisateur %s a un certificat qui va expirer %s :: %s' % (
             res[0][1]['mail'][0].decode("utf-8"), (end_90 - datetime.datetime.now()), serial_end_90))
 
         if valid:
-            print('L\'user %s n\'à pas un certificat qui va expiré %s :: %s' % (res[0][1]['mail'][0].decode("utf-8"), valid, serial_valid))
+            print('L\'utilisateur %s n\'a pas de certificat qui va expirer %s :: %s' % (res[0][1]['mail'][0].decode("utf-8"), valid, serial_valid))
 
 
 l.unbind()
