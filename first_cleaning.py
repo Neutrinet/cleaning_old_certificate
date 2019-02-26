@@ -27,16 +27,12 @@ if __name__ == '__main__':
     config.read(config_file)
 
     # date = datetime.now().strftime("%Y-%m-%d")
-    date = '2017-09-20'
+    # date = "2017-09-20"
+    date = "2017-06-20"
     get_users = GetUsersExpire(config, date)
+    data = get_users.find_user_ago_expire(from_interval='25 years', to_interval='1 years')
 
-    user_expire = {
-        'ago_3_months': get_users.find_user_ago_expire(from_interval='3 months 1 day', to_interval='3 months'),
-        'today': get_users.find_user_ago_expire(from_interval='1 day', to_interval='0 day'),
-        'in_3_months': get_users.find_user_in_expire(from_interval='3 months 1 day', to_interval='3 months')
-    }
-
-    pprint(user_expire)
+    pprint(data)
 
     # send email
 
