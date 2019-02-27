@@ -7,11 +7,13 @@ import configparser
 import logging
 from pprint import pprint
 
+from tools.generate_email import GenerateEmail
 from tools.get_users_expire import GetUsersExpire
 
 if __name__ == '__main__':
 
     current_dir = os.getcwd()
+    templates_dir = current_dir + "/templates/"
 
     logging.basicConfig(
         # filename=current_dir + "/logs/clean-" + datetime.datetime.now().strftime('%Y-%m-%d') + ".log",
@@ -26,13 +28,16 @@ if __name__ == '__main__':
     config = configparser.ConfigParser()
     config.read(config_file)
 
-    # date = datetime.now().strftime("%Y-%m-%d")
+    date = datetime.now().strftime("%Y-%m-%d")
     # date = "2017-09-20"
-    date = "2017-06-20"
+    # date = "2017-06-20"
     get_users = GetUsersExpire(config, date)
-    data = get_users.find_user_ago_expire(from_interval='25 years', to_interval='1 years')
+    datas = get_users.find_user_ago_expire(from_interval='2 years', to_interval='1 years')
 
-    pprint(data)
+    gen_email = GenerateEmail(templates_dir=templates_dir)
+
+    for data in datas:
+        gen_email.genereate_email(type='2-years', infos=data)
 
     # send email
 

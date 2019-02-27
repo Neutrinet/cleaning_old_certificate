@@ -1,9 +1,8 @@
 # /usr/bin/env python3
 # -*- coding: utf-8 -*-
+import datetime
 import ldap
 import logging
-from datetime import datetime
-
 import psycopg2
 import psycopg2.extras
 from pprint import pprint
@@ -67,10 +66,12 @@ class GetUsersExpire:
         for result in results:
             ldap_infos = self._more_info_by_uuid(result['userId'])
             if ldap_infos:
+                delta_day = datetime.datetime.today() - result['revoc']
                 pgsq_infos = {
                     "ipv4": result['address4'],
                     "ipv6": result['address6'],
                     "expire_at": result['revoc'],
+                    "delta_day": delta_day.days,
                     "uuid": result['userId'],
                 }
 
@@ -115,10 +116,12 @@ class GetUsersExpire:
         for result in results:
             ldap_infos = self._more_info_by_uuid(result['userId'])
             if ldap_infos:
+                delta_day = result['revoc'] - datetime.datetime.today()
                 pgsq_infos = {
                     "ipv4": result['address4'],
                     "ipv6": result['address6'],
                     "expire_at": result['revoc'],
+                    "delta_day": delta_day.days,
                     "uuid": result['userId'],
                 }
 

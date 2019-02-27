@@ -26,8 +26,8 @@ if __name__ == '__main__':
     config = configparser.ConfigParser()
     config.read(config_file)
 
-    # date = datetime.now().strftime("%Y-%m-%d")
-    date = '2017-09-20'
+    date = datetime.now().strftime("%Y-%m-%d")
+    # date = '2017-09-20'
     get_users = GetUsersExpire(config, date)
 
     user_expire = {
