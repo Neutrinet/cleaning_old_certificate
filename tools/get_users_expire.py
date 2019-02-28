@@ -126,7 +126,8 @@ class GetUsersExpire:
                     "uuid": result['userId'],
                 }
 
-                infos = {**pgsq_infos, **ldap_infos}
+                infos = pgsq_infos.copy()
+                infos.update(ldap_infos)
                 data.append(infos)
             else:
                 self.logger.info('not ldap infos found from user_id = {uudi}'.format(uudi=result['userId']))
