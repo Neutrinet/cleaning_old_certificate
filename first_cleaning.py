@@ -7,7 +7,8 @@ import configparser
 import logging
 from pprint import pprint
 
-from tools.generate_email import GenerateEmail
+from tools.liberate_ip import LiberateIp
+from tools.send_email import SendEmail
 from tools.get_users_expire import GetUsersExpire
 
 if __name__ == '__main__':
@@ -34,13 +35,8 @@ if __name__ == '__main__':
     get_users = GetUsersExpire(config, date)
     datas = get_users.find_user_ago_expire(from_interval='2 years', to_interval='1 years')
 
-    gen_email = GenerateEmail(templates_dir=templates_dir)
-
     for data in datas:
-        gen_email.genereate_email(type='2-years', infos=data)
+        # SendEmail(config=config['zammad'], templates_dir=templates_dir, template='expire-ago-2-years', infos_user=data)
+        pass
 
-    # send email
-
-    # remove old ip from 6 months
-
-
+    LiberateIp(config=config, date=date, from_interval='2 years', to_interval='1 years')
