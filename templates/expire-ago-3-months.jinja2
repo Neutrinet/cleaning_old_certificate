@@ -1,0 +1,56 @@
+Attention ! C'est le dernier message que vous recevez. Si vous ne renouvelez pas votre certificat dans les {{ delta_remove_day }} jours,  ce dernier sera effacé avec votre compte VPN et l'adresse IP sera réattribuée.
+
+Bonjour {{ firstname }} {{ lastname }},
+
+Il y a {{ delta_expire_day }} jours, votre certificat de connexion au VPN de Neutrinet a expiré.
+De ce fait, vous (ou votre Brique Internet) ne pouvez plus vous y connecter.
+
+Pour résoudre ce souci, vous trouverez de la documentation sur cette page : https://wiki.neutrinet.be/vpn/renew-cert
+
+Si vous avez des difficultés, nous vous proposons de passer à l'une de nos rencontres du 3e dimanche du mois. Vous pouvez également poser vos questions en répondant à ce message.
+
+Afin d'optimiser l'assignation des IPv4, les adresses dont les certificats n'ont pas été renouvelés depuis six mois sont libérées pour les futurs membres.
+Sans action de votre part, la vôtre le sera dans {{ delta_remove_day }} jours.
+
+Voici les informations que nous avons concernant ce certificat :
+    IPV4 : {{ ipv4 }}
+{%- if ipv6 %}
+    IPV6 : {{ ipv6 }}
+{%- endif %}
+
+
+Cordialement,
+L'équipe de Neutrinet asbl
+
+https://neutrinet.be
+https://chat.neutrinet.be
+https://neutrinet.be/fr/#install_party
+
+======
+
+Read carefully, this is the last message you'll get! If you don't follow the renewal instructions, your VPN account and the associated IP addresses will be deleted in {{ delta_remove_day }} days.
+
+Hello {{ firstname }} {{ lastname }},
+
+{{ delta_expire_day }} days ago, your VPN certificate has expired.
+You (or your Internet Cube) are no longer connected to the Neutrinet network.
+
+You'll find some renewal instructions here: https://wiki.neutrinet.be/vpn/renew-cert (french)
+
+If you have any trouble restoring your connection, Neutrinet's meetings are held every third Sunday of the month. You can also ask any question by replying to this email.
+
+To optimize IPv4 assignments, addresses with certificates invalid for more than six months will be released and might be distributed to new members.
+Without action on your part, yours will be reassigned in {{ delta_remove_day }} days.
+
+We have the following information regarding this certificate:
+    IPV4 : {{ ipv4 }}
+{%- if ipv6 %}
+    IPV6 : {{ ipv6 }}
+{%- endif %}
+
+Sincerely,
+The Neutrinet asbl team
+
+https://neutrinet.be
+https://chat.neutrinet.be
+https://neutrinet.be/en/#install_party

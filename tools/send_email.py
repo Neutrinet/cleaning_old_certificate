@@ -41,16 +41,13 @@ class SendEmail:
             "group": "Hub Cube",
             "state_id": 4,
             "note": "UUID {uuid}".format(uuid=self.infos_user['uuid']),
-            "customer_id": "guess:{email}".format(email="contact@tharyrok.eu"
-                                                  # email=infos_user['email']
-                                                  ),
+            "customer_id": "guess:{email}".format(email=self.infos_user['email']),
             "article": {
                 "subject": "[Neutrinet] Renouvellement de votre certificat de connexion au VPN - VPN certificate renewal",
                 "to": "{firstname} {lastname} <{email}>".format(
                     firstname=self.infos_user['firstname'],
                     lastname=self.infos_user['lastname'],
-                    email="contact@tharyrok.eu"
-                    # email=infos_user['email']
+                    email=self.infos_user['email']
                 ),
                 "body": self._generated_email(),
                 "type": "email",
