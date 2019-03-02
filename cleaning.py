@@ -30,7 +30,6 @@ if __name__ == '__main__':
     config.read(config_file)
 
     date = datetime.now().strftime("%Y-%m-%d")
-    # date = "2017-09-20"
     get_users = GetUsersExpire(config, date)
 
     users_ago_3_months = get_users.find_user_ago_expire(from_interval='3 months 1 day', to_interval='3 months')
@@ -41,8 +40,24 @@ if __name__ == '__main__':
         SendEmail(
             config=config['zammad'],
             templates_dir=templates_dir,
-            template='expire-ago-2-years',
+            template='expire-ago-3-months',
             infos_user=user_ago_3_months
+        )
+
+    for user_today in users_today:
+        SendEmail(
+            config=config['zammad'],
+            templates_dir=templates_dir,
+            template='expire-ago-3-months',
+            infos_user=user_today
+        )
+
+    for user_in_3_months in users_in_3_months:
+        SendEmail(
+            config=config['zammad'],
+            templates_dir=templates_dir,
+            template='expire-in-3-months',
+            infos_user=user_in_3_months
         )
 
     LiberateIp(config=config, date=date, from_interval='25 years', to_interval='6 months')

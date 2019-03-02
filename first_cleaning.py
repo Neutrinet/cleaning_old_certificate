@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     logging.basicConfig(
         # filename=current_dir + "/logs/clean-" + datetime.datetime.now().strftime('%Y-%m-%d') + ".log",
-        level=logging.INFO,
+        level=logging.DEBUG,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
 
@@ -31,12 +31,18 @@ if __name__ == '__main__':
 
     date = datetime.now().strftime("%Y-%m-%d")
     # date = "2017-09-20"
-    # date = "2017-06-20"
+    # date = "2017-05-30"
     get_users = GetUsersExpire(config, date)
-    datas = get_users.find_user_ago_expire(from_interval='2 years', to_interval='1 years')
+    users_ago_3_months = get_users.find_user_ago_expire(from_interval='25 years', to_interval='6 months')
+    # users_ago_3_months = get_users.find_user_in_expire(from_interval='3 months 1 day', to_interval=' 25 years')
 
-    for data in datas:
-        # SendEmail(config=config['zammad'], templates_dir=templates_dir, template='expire-ago-2-years', infos_user=data)
-        pass
+    for user_ago_3_months in users_ago_3_months:
+        # SendEmail(
+        #     config=config['zammad'],
+        #     templates_dir=templates_dir,
+        #     template='expire-ago-3-months',
+        #     infos_user=user_ago_3_months
+        # )
+        pprint(user_ago_3_months)
 
-    LiberateIp(config=config, date=date, from_interval='2 years', to_interval='1 years')
+    #LiberateIp(config=config, date=date, from_interval='25 years', to_interval='6 years')
