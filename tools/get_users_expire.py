@@ -34,10 +34,10 @@ class GetUsersExpire:
         self.cur.close()
         self.conn.close()
 
-    def find_user_ago_expire(self, from_interval, to_interval):
+    def find_user_interval(self, interval):
         self.logger.info(
-            'find ago expire interval {from_interval} to {to_interval}'
-            .format(from_interval=from_interval, to_interval=to_interval)
+            'find in expire interval {interval}'
+            .format(interval=interval)
         )
 
         data = []
@@ -59,62 +59,8 @@ class GetUsersExpire:
                          'select distinct client_id, address from address_pool where "ipVersion"=6 and not client_id=-1'
                          ') as T5 '
                          'on (T1.client_id=T5.client_id) '
-                         'where T2.revoc >= (\'{date}\'::date - interval \'{from_interval}\') '
-                         'and T2.revoc < (\'{date}\'::date -  interval \'{to_interval}\') '
-                         .format(date=self.date, from_interval=from_interval, to_interval=to_interval)
-                         )
-        results = self.cur.fetchall()
-        for result in results:
-            ldap_infos = self._more_info_by_uuid(result['userId'])
-            if ldap_infos:
-                delta_day = datetime.datetime.today() - result['revoc']
-                delta_remove_day = (result['revoc'] + relativedelta(months=+6)) - datetime.datetime.today()
-                pgsq_infos = {
-                    "ipv4": result['address4'],
-                    "ipv6": result['address6'],
-                    "expire_at": result['revoc'],
-                    "delta_day": delta_day.days,
-                    "delta_remove_day": delta_remove_day.days,
-                    "uuid": result['userId'],
-                }
-
-                infos = pgsq_infos.copy()
-                infos.update(ldap_infos)
-                data.append(infos)
-            else:
-                self.logger.info('not ldap infos found from user_id = {uudi}'.format(uudi=result['userId']))
-
-        return data
-
-
-    def find_user_in_expire(self, from_interval, to_interval):
-        self.logger.info(
-            'find in expire interval {from_interval} to {to_interval}'
-            .format(from_interval=from_interval, to_interval=to_interval)
-        )
-
-        data = []
-        self.cur.execute('select distinct T1.client_id, '
-                         'T3."userId", '
-                         'T2.revoc, '
-                         'T4.address as address4, '
-                         'T5.address as address6 '
-                         'from certificates as T1 '
-                         'join ( '
-                         'select client_id, max("revocationDate"'
-                         ') as revoc from certificates group by client_id) as T2 '
-                         'on (T1.client_id = T2.client_id) '
-                         'join ovpn_clients as T3 '
-                         'on (T1.client_id = T3.id) '
-                         'join (select distinct client_id, address from address_pool where "ipVersion"=4) as T4 '
-                         'on (T1.client_id=T4.client_id) '
-                         'LEFT join ('
-                         'select distinct client_id, address from address_pool where "ipVersion"=6 and not client_id=-1'
-                         ') as T5 '
-                         'on (T1.client_id=T5.client_id) '
-                         'where T2.revoc >= (\'{date}\'::date + interval \'{from_interval}\') '
-                         'and T2.revoc < (\'{date}\'::date +  interval \'{to_interval}\') '
-                         .format(date=self.date, from_interval=from_interval, to_interval=to_interval)
+                         'where T2.revoc::date = (\'{date}\'::date {interval}) '
+                         .format(date=self.date, interval=interval)
                          )
         results = self.cur.fetchall()
         for result in results:

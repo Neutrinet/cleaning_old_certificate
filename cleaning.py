@@ -17,8 +17,8 @@ if __name__ == '__main__':
     templates_dir = current_dir + "/templates/"
 
     logging.basicConfig(
-        # filename=current_dir + "/logs/clean-" + datetime.datetime.now().strftime('%Y-%m-%d') + ".log",
-        level=logging.INFO,
+        filename=current_dir + "/logs/clean-" + datetime.now().strftime('%Y-%m-%d') + ".log",
+        level=logging.DEBUG,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
 
@@ -32,9 +32,9 @@ if __name__ == '__main__':
     date = datetime.now().strftime("%Y-%m-%d")
     get_users = GetUsersExpire(config, date)
 
-    users_ago_3_months = get_users.find_user_ago_expire(from_interval='3 months 1 day', to_interval='3 months')
-    users_today = get_users.find_user_ago_expire(from_interval='1 day', to_interval='0 day')
-    users_in_3_months = get_users.find_user_in_expire(from_interval='3 months 1 day', to_interval='3 months')
+    users_ago_3_months = get_users.find_user_interval(interval='+ \'3 months\'')
+    users_today = get_users.find_user_interval(interval='+ \'0 day\'')
+    users_in_3_months = get_users.find_user_interval(interval='+ \'3 months\'')
 
     for user_ago_3_months in users_ago_3_months:
         SendEmail(
@@ -48,7 +48,7 @@ if __name__ == '__main__':
         SendEmail(
             config=config['zammad'],
             templates_dir=templates_dir,
-            template='expire-ago-3-months',
+            template='expire-today',
             infos_user=user_today
         )
 
