@@ -59,7 +59,7 @@ class GetUsersExpire:
                          'select distinct client_id, address from address_pool where "ipVersion"=6 and not client_id=-1'
                          ') as T5 '
                          'on (T1.client_id=T5.client_id) '
-                         'where T2.revoc::date = (\'{date}\'::date {interval}) '
+                         'where T2.revoc::date = (\'{date}\'::date {interval}::interval ) '
                          .format(date=self.date, interval=interval)
                          )
         results = self.cur.fetchall()
