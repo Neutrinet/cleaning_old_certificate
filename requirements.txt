@@ -13,7 +13,7 @@ py-postgresql==1.2.1
 pyOpenSSL==17.0.0
 pycparser==2.17
 pyldap==2.4.35.1
-requests==2.17.3
+requests==2.20.0
 shellescape==3.4.1
 six==1.10.0
 urllib3==1.21.1
