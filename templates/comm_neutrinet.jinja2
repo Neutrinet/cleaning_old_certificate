@@ -1,0 +1,131 @@
+[english below]
+
+Salut,
+
+Ce mois d'août 2020 est le mois du déménagement.
+
+https://wiki.neutrinet.be/fr/rapports/2020/07-04#comment_migrer_l_infra_i3d_vers_verixi
+https://wiki.neutrinet.be/fr/rapports/2020/08-01#preparation_du_demenagement
+
+L'infrastructure (site, wiki, vpn, support, mattermost, …) de Neutrinet est actuellement supportée par un serveur SuperMicro qui tourne depuis de longues années chez i3D à Rotterdam.
+
+En 2018 nous avons acheté 2 serveurs HP Gen8 (bi-Xeon, 64GB, 2x900Gb SAS + 1TB SATA chacun).
+
+Sur ces 2 HP nous utiliserons
+
+- Proxmox comme hôte des machines virtuelles
+- Openvswitch comme simulateur de switch
+- Ceph comme stockage distribué
+
+Sur ces deux HP, nous avons ajouté 2 cartes réseau fibres optiques 10Gb dédiées à Ceph et à la réplication des données.
+Qui dit réplication de données, dit quorum et donc il y a une troisième machine, un mini PC avec 6 interfaces réseau 1GB pour simuler un troisième membre du quorum.
+Un quorum permet à des logiciels comme Ceph ou Proxmox de prendre des décisions à 3 voix parce qu'il faut un nombre impair de membres.
+
+Sur des machines virtuelles
+
+- Pfsense comme parefeu
+- Debian comme OS pour les autres VMs (web, vpn, support, mattermost, …)
+- Un routeur basé sur Debian qui fera les liens BGP pour annoncer nos adresses IP aux Internets
+
+Ce matériel va être installé avant le 15 août à Bruxelles chez Verixi qui remplacera donc i3D.
+
+# samedi 8 août 2020
+
+Nous allons devoir changer les adresses IP pour correspondre aux besoins de notre nouvelle infrastructure.
+
+Si vous utilisez le DNS pour atteindre neutrinet, c'est ce que font les briques Internet, il n'y aura rien à faire.
+Nous mettrons à jours les enregistrements DNS et les changements d'adresse IP seront transparents.
+
+MAIS !!! IMPORTANT POUR VOUS SI VOUS UTILISEZ DIRECTEMENT LES ADRESSES IP POUR ATTEINDRE LES SERVEURS
+
+nom DNS               ancienne IP         nouvelle IP
+vpn.neutrinet.be    80.67.181.3            80.67.181.11
+vpn.neutrinet.be    2001:913:1000::3   2001:913:1000::11
+
+Il est quand même préférable d'utiliser le nom de domaine vpn.neutrinet.be
+
+Cela se fera alors que le serveur est toujours à Rotterdam chez i3D.
+
+# samedi 15 août 2020
+
+Nous allons basculer entre i3D (Rotterdam) et Verixi (Bruxelles).
+Entre temps nous aurons été placer les serveurs physiquement dans le datacenter à Bruxelles et nous rapatrierons les machines virtuelles entre Rotterdam et Bruxelles.
+
+Il se pourra donc qu'il y ait quelques interruptions des services, mais on ne déménage pas tout les ans non plus.
+
+# rester en contact
+
+Durant ces changements (samedi 8 et 15), nous tâcherons de rester joignable…
+
+- sur irc #neutrinet sur Freenode
+- par mail sur support@neutrinet.be
+
+Mais si vous avez accès à notre Mattermost ( https://chat.neutrinet.be ) c'est que le déménagement se déroule bien et nous préférons son utilisation puisqu'il est sur les serveurs de Neutrinet.
+
+L'équipe Infra.
+
+--
+
+Hello,
+
+This month will be the moving one !
+
+https://wiki.neutrinet.be/fr/rapports/2020/07-04#comment_migrer_l_infra_i3d_vers_verixi (fr only, sorry)
+https://wiki.neutrinet.be/fr/rapports/2020/08-01#preparation_du_demenagement (fr only, sorry)
+
+Neutrinet's infrastructure (website, wiki, vpn, support, mattermost,…) is currently handled by a SuperMicro server running for many years at i3D in Rotterdam.
+
+In 2018 we bought 2 HP Gen 8 servers (bi-Xeon, 64GB, 2x900Gb SAS + 1TB SATA each).
+
+On those 2 HP we will run
+
+- Proxmox as host for virtual machines
+- Openvswitch as switch emulator
+- Ceph as distributed storage
+
+On those two HP, we have had 2 fibre 10Gb network cards dedicated to Ceph and data replication.
+Who says replication, says quorum and to do so there is a third machine, a mini PC with 6 1Gb interfaces to simulate a third quorum membre.
+A quorum allows softwares like Ceph or Proxmox to take decisions based on 3 voices because it needs an even number of membres.
+
+On virtual machines
+
+- Pfsense as firewalls
+- Debian as OS for the other VMs (website, vpn, support, mattermost, …)
+- A Debian based router for the BGP links to announce our IP addresses to the Internets.
+
+The hardware will be installed before the 15th of August at Verixi in Brussels to replace i3D.
+
+# Saturday the 8th of August 2020
+
+We will have to change the IP adresses to suit the needs of our new infrastructure.
+
+If you use the DNS to reach Neutrinet, it's what the Internet Cubes do, there is nothing to do.
+We will update the DNS records and the IP address changes will be transparent.
+
+BUT !!! IMPORTANT FOR YOU IF YOU USE DIRECT IP TO REACH THE SERVERS.
+
+DNS name             old IP                    new IP
+vpn.neutrinet.be    80.67.181.3            80.67.181.11
+vpn.neutrinet.be    2001:913:1000::3    2001:913:1000::11
+
+It is still preferable to use the domain name vpn.neutrinet.be.
+
+This will be done while the server still at Rotterdam at i3D.
+
+# Saturday the 16th of August
+
+We will switch from i3D (Rotterdam) to Verixi (Brussels).
+Meanwhile we will have been placed the new servers into the datacenter in Brussels and transfered the virtual machines between Rotterdam and Brussels.
+
+There will be some interuptions of the services we provide, but we do not move every years neither.
+
+# Stay in touch
+
+During those processes (Saturday the 8th and the 15th), we will try to stay reachable
+
+- through IRC (#neutrinet on Freenode)
+- by mail support@neutrinet.be
+
+But if you can still reach our Mattermost ( https://chat.neutrinet.be ) it means that the moving is going well and we prefer you to use it because it's on Neutrinet's servers.
+
+The infra Team.

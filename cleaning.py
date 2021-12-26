@@ -13,7 +13,8 @@ from tools.send_email import SendEmail
 
 if __name__ == '__main__':
 
-    current_dir = os.getcwd()
+    #current_dir = os.getcwd()
+    current_dir = "/opt/cleaning_old_certificate"
     templates_dir = current_dir + "/templates/"
 
     logging.basicConfig(
@@ -32,9 +33,9 @@ if __name__ == '__main__':
     date = datetime.now().strftime("%Y-%m-%d")
     get_users = GetUsersExpire(config, date)
 
-    users_ago_3_months = get_users.find_user_interval(interval='+ \'3 months\'')
+    users_ago_3_months = get_users.find_user_interval(interval='- \'45 days\'')
     users_today = get_users.find_user_interval(interval='+ \'0 day\'')
-    users_in_3_months = get_users.find_user_interval(interval='+ \'3 months\'')
+    users_in_3_months = get_users.find_user_interval(interval='+ \'90 days\'')
 
     for user_ago_3_months in users_ago_3_months:
         SendEmail(
@@ -60,4 +61,4 @@ if __name__ == '__main__':
             infos_user=user_in_3_months
         )
 
-    LiberateIp(config=config, date=date, from_interval='25 years', to_interval='6 months')
+    LiberateIp(config=config, date=date, from_interval='25 years', to_interval='3 months')
