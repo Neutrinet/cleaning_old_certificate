@@ -32,9 +32,9 @@ if __name__ == '__main__':
     date = datetime.now().strftime("%Y-%m-%d")
     get_users = GetUsersExpire(config, date)
 
-    users_ago_3_months = get_users.find_user_interval(interval='+ \'3 months\'')
-    users_today = get_users.find_user_interval(interval='+ \'0 day\'')
-    users_in_3_months = get_users.find_user_interval(interval='+ \'3 months\'')
+    users_ago_2_months = get_users.find_user_interval(interval="+ '2 months'")
+    users_today = get_users.find_user_interval(interval="+ '0 day'")
+    users_in_2_months = get_users.find_user_interval(interval="+ '2 months'")
 
     #for user_ago_3_months in users_ago_3_months:
     #    SendEmail(
