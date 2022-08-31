@@ -1,0 +1,58 @@
+Bonjour {{ firstname }} {{ lastname }},
+
+---
+Si vous recevez ce message et que vous utilisez encore le VPN de Neutrinet associé à cette IP {{ ipv4 }}
+---
+
+Il y a {{ delta_day }} jours, votre certificat de connexion au VPN de Neutrinet a expiré. Cela veut dire que ça fait au moins depuis ce temps que votre Brique Internet n'est plus connectée (ou que vous n'utilisez plus le VPN de Neutrinet sur votre ordinateur, serveur…).
+
+À chaque Brique, Neutrinet associe une adresse IPv4 unique, ce qui permet de bénéficier d'une IP fixe et de pouvoir se connecter à sa Brique depuis partout. Or, vous le savez peut-être, les adresses IPv4 sont rares…
+
+C'est pourquoi vos IP seront attribuées à d'autres personnes et à leurs Briques aux soudures encore fraîches (les veinardes).
+
+Si nous recyclons votre IP, tout n'est toutefois pas perdu. Ce n'est, en fait, pas très grave… On pourra vous en attribuer une nouvelle dès que vous en aurez besoin (par exemple après de bons soins et un cocktail de vitamines donnés à vos Briques en install party — on dit ça, on dit rien…).
+
+Voici les informations que nous avons concernant ce certificat :
+    IPV4 : {{ ipv4 }}
+{%- if ipv6 %}
+    IPV6 : {{ ipv6 }}
+{%- endif %}
+
+Que ce soit maintenant, ou plus tard, n'hésitez pas à nous répondre ou venir nous voir, on peut également recycler les Briques non utilisées ou discuter d'un verre autour de neutralité du net.
+
+
+À bientôt !
+Neutrinet asbl
+https://neutrinet.be
+https://chat.neutrinet.be
+https://neutrinet.be/fr/#install_party
+========
+
+Hello {{ firstname }} {{ lastname }},
+
+---
+If you receive this message and you are still using the Neutrinet VPN associated with this IP {{ ipv4 }}
+---
+
+{{delta_day}} days ago, your certificate of connection to the Neutrinet VPN expired. This means that it has been at least since then that your Internet Cube is no longer connected (or that you no longer use the Neutrinet VPN on your computer, server...).
+
+Neutrinet associates a unique IPv4 address to each Cube, which allows you to benefit from a fixed IP and to be able to connect to your Cube from anywhere. However, as you may know, IPv4 addresses are rare...
+
+This is why your IPs will be attributed to other people and their bricks with still fresh welds (lucky ones).
+
+If we recycle your IP, however, not everything is lost. It's not, in fact, very serious... We can assign you a new one as soon as you need it (for example after good care and a cocktail of vitamins given to your Bricks in install party - we say that, we say nothing...).
+
+Here is the information we have about this certificate:
+    IPV4 : {{ ipv4 }}
+{%- if ipv6 %}
+    IPV6 : {{ ipv6 }}
+{%- endif %}
+
+Whether now or later, feel free to answer us or come and see us, we can also recycle unused bricks or discuss a drink around net neutrality.
+
+
+See you soon!
+Neutrinet asbl
+https://neutrinet.be
+https://chat.neutrinet.be
+https://neutrinet.be/en/#install_party

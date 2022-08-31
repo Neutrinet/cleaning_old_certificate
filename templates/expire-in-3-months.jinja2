@@ -1,0 +1,55 @@
+Bonjour {{ firstname }} {{ lastname }},
+
+Dans {{ delta_day }}  jours, votre certificat de connexion au VPN de Neutrinet va expirer.
+À ce moment-là, vous (ou votre Brique Internet) ne pourrez plus vous y connecter.
+
+Pour résoudre ce souci, vous trouverez de la documentation sur cette page : https://wiki.neutrinet.be/vpn/renew-cert
+
+Vous pouvez y jeter un œil dès maintenant afin de ne subir aucune coupure.
+
+Si vous avez des difficultés, nous vous proposons de passer à l'une de nos rencontres du 3e dimanche du mois. Vous pouvez également poser vos questions en répondant à ce message.
+
+Afin d'optimiser l'assignation des IPv4, les adresses dont les certificats ont expiré et n'ont pas été renouvelés depuis six mois seront libérées pour les futurs membres.
+Sans action de votre part, la vôtre le sera dans {{ delta_remove_day }} jours.
+
+Voici les informations que nous avons concernant ce certificat :
+    IPV4 : {{ ipv4 }}
+{%- if ipv6 %}
+    IPV6 : {{ ipv6 }}
+{%- endif %}
+
+Cordialement,
+L'équipe de Neutrinet asbl
+
+https://neutrinet.be
+https://chat.neutrinet.be
+https://neutrinet.be/fr/#install_party
+
+======
+
+Hello {{ firstname }} {{ lastname }},
+
+In {{ delta_day }} days, your VPN certificate will expire.
+You (or your Internet Cube) will no longer be connected to the Neutrinet network.
+
+You'll find some renewal instructions here: https://wiki.neutrinet.be/vpn/renew-cert (french)
+
+To avoid any interruption, follow them as of today.
+
+If you encounter any trouble, Neutrinet's meetings are held every third Sunday of the month. You can also ask any question by replying to this email.
+
+To optimize IPv4 assignments, addresses with certificates invalid for more than six months will be released and might be distributed to new members.
+Without action on your part, yours will be reassigned in {{ delta_remove_day }} days.
+
+We have the following information regarding this certificate:
+    IPV4 : {{ ipv4 }}
+{%- if ipv6 %}
+    IPV6 : {{ ipv6 }}
+{%- endif %}
+
+Sincerely,
+The Neutrinet asbl team
+
+https://neutrinet.be
+https://chat.neutrinet.be
+https://neutrinet.be/en/#install_party
