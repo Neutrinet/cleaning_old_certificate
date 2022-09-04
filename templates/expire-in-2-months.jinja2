@@ -1,10 +1,12 @@
-
 Bonjour {{ firstname }} {{ lastname }},
 
-Aujourd'hui, votre certificat de connexion au VPN de Neutrinet a expiré.
-De ce fait, vous (ou votre Brique Internet) ne pouvez plus vous y connecter.
+Dans {{ delta_day }} jours, votre certificat de connexion au VPN de Neutrinet expirerera.
+À ce moment-là, vous (ou votre Brique Internet) ne pourrez plus vous y connecter.
 
 Pour résoudre ce souci, vous trouverez de la documentation sur cette page : https://wiki.neutrinet.be/fr/vpn/renew-cert
+Vous pouvez y jeter un œil dès maintenant afin de ne subir aucune coupure.
+
+Si vous utilisez Yunohost et avez l'application Neutrinet installée, vous ne devez rien faire : le certificat de connexion au VPN sera renouvelé automatiquement par l'application.
 
 Si vous avez des difficultés, nous vous proposons de passer à l'une de nos rencontres du 3e dimanche du mois.
 Vous pouvez également poser vos questions en répondant à ce message ou sur notre chat Mattermost (https://chat.neutrinet.be).
@@ -30,12 +32,15 @@ https://neutrinet.be/fr/#install-party
 
 Hello {{ firstname }} {{ lastname }},
 
-Today, your Neutrinet VPN certificate has expired.
-Therefore, you (or your Internet Cube) are no longer connected to the VPN.
+In {{ delta_day }} days, your Neutrinet VPN certificate will expire.
+At that time, you (or your Internet Cube) will no longer be connected to the VPN.
 
 To solve this issue, you'll find some renewal instructions here: https://wiki.neutrinet.be/en/vpn/renew-cert
+You can take a look at them right now to avoid any interruption.
 
-If you encounter any trouble restoring your connection, Neutrinet's meetings are held every 3rd Sunday of the month.
+If you are using Yunohost and have the Neutrinet application installed, you don't have to do anything: the VPN certificate will be renewed automatically by the app.
+
+If you encounter any trouble, Neutrinet's meetings are held every 3rd Sunday of the month.
 You can also ask us any question by replying to this email or on our Mattermost chat (https://chat.neutrinet.be).
 
 To optimize IPv4 assignments, addresses with invalid certificate for more than 3 months will be released and might be distributed to new members.
@@ -52,4 +57,5 @@ The Neutrinet asbl team
 
 https://neutrinet.be
 https://chat.neutrinet.be
-https://neutrinet.be/en/#install_party
+https://wiki.neutrinet.be
+https://neutrinet.be/en/#install-party

@@ -1,0 +1,57 @@
+Attention ! C'est le dernier message que vous recevez. Si vous ne renouvelez pas votre certificat dans les {{ delta_remove_day }} jours, ce dernier sera effacé de votre compte VPN et l'adresse IP sera réattribuée.
+
+Bonjour {{ firstname }} {{ lastname }},
+
+Il y a {{ delta_day }} jours, votre certificat de connexion au VPN de Neutrinet a expiré.
+De ce fait, vous (ou votre Brique Internet) ne pouvez plus vous y connecter.
+
+Pour résoudre ce souci, vous trouverez de la documentation sur cette page : https://wiki.neutrinet.be/fr/vpn/renew-cert
+
+Si vous avez des difficultés, nous vous proposons de passer à l'une de nos rencontres du 3e dimanche du mois. Vous pouvez également poser vos questions en répondant à ce message ou sur notre chat Mattermost (https://chat.neutrinet.be)..
+
+Afin d'optimiser l'assignation des IPv4, les adresses dont le certificat n'a pas été renouvelé depuis 3 mois sont libérées pour les futurs membres.
+Sans action de votre part, votre IP sera libérée le {{ revoc.strftime("%d/%m/%Y") }}, c'est-à-dire dans {{ delta_remove_day }} jours.
+
+Voici les informations que nous avons concernant ce certificat :
+    IPV4 : {{ ipv4 }}
+{%- if ipv6 %}
+    IPV6 : {{ ipv6 }}
+{%- endif %}
+
+Cordialement,
+L'équipe de Neutrinet asbl
+
+https://neutrinet.be
+https://chat.neutrinet.be
+https://wiki.neutrinet.be
+https://neutrinet.be/fr/#install-party
+
+======
+
+Read carefully, this is the last message you'll get! If you don't follow the renewal instructions, your VPN certificate and the associated IP addresses will be deleted in {{ delta_remove_day }} days.
+
+Hello {{ firstname }} {{ lastname }},
+
+{{ delta_day }} days ago, your Neutrinet VPN certificate has expired.
+You (or your Internet Cube) are no longer connected to the VPN.
+
+To solve this issue, you'll find some renewal instructions here: https://wiki.neutrinet.be/en/vpn/renew-cert
+
+If you encounter any trouble restoring your connection, Neutrinet's meetings are held every 3rd Sunday of the month. You can also ask us any question by replying to this email or on our Mattermost chat (https://chat.neutrinet.be).
+
+To optimize IPv4 assignments, addresses with invalid certificate for more than 3 months will be released and might be distributed to new members.
+Without action on your part, your IP will be reassigned on {{ revoc.strftime("%d/%m/%Y") }}, i.e. in {{ delta_remove_day }} days.
+
+We have the following information regarding this certificate:
+    IPV4 : {{ ipv4 }}
+{%- if ipv6 %}
+    IPV6 : {{ ipv6 }}
+{%- endif %}
+
+Sincerely,
+The Neutrinet asbl team
+
+https://neutrinet.be
+https://chat.neutrinet.be
+https://wiki.neutrinet.be
+https://neutrinet.be/en/#install-party
