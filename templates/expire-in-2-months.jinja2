@@ -12,7 +12,7 @@ Si vous avez des difficultés, nous vous proposons de passer à l'une de nos ren
 Vous pouvez également poser vos questions en répondant à ce message ou sur notre chat Mattermost (https://chat.neutrinet.be).
 
 Afin d'optimiser l'assignation des IPv4, les adresses dont le certificat a expiré et n'a pas été renouvelé depuis 3 mois seront libérées pour les futurs membres.
-Sans action de votre part, votre IP sera libérée le {{ revoc.strftime("%d/%m/%Y") }}.
+Sans action de votre part, votre IP sera libérée le {{ expire_at.strftime("%d/%m/%Y") }}.
 
 Voici les informations que nous avons concernant ce certificat :
     IPV4 : {{ ipv4 }}
@@ -44,7 +44,7 @@ If you encounter any trouble, Neutrinet's meetings are held every 3rd Sunday of 
 You can also ask us any question by replying to this email or on our Mattermost chat (https://chat.neutrinet.be).
 
 To optimize IPv4 assignments, addresses with invalid certificate for more than 3 months will be released and might be distributed to new members.
-Without any action on your part, your IP will be reassigned on {{ revoc.strftime("%d/%m/%Y") }}.
+Without any action on your part, your IP will be reassigned on {{ expire_at.strftime("%d/%m/%Y") }}.
 
 We have the following information regarding this certificate:
     IPV4 : {{ ipv4 }}
