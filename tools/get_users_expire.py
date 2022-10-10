@@ -67,12 +67,14 @@ class GetUsersExpire:
             ldap_infos = self._more_info_by_uuid(result['userId'])
             if ldap_infos:
                 delta_day = result['revoc'] - datetime.datetime.today()
-                delta_remove_day = (result['revoc'] + relativedelta(months=+3)) - datetime.datetime.today()
+                remove_date = result['revoc'] + relativedelta(months=+3)
+                delta_remove_day = remove_date - datetime.datetime.today()
 
                 pgsq_infos = {
                     "ipv4": result['address4'],
                     "ipv6": result['address6'],
                     "expire_at": result['revoc'],
+                    "remove_at": remove_date,
                     "delta_day": abs(delta_day.days),
                     "delta_remove_day": abs(delta_remove_day.days),
                     "uuid": result['userId'],
