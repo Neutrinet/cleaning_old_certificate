@@ -38,13 +38,13 @@ class SendEmail:
         self.logger.debug('create ticket uuid : ' + self.infos_user['uuid'])
         data = {
             "title": "VPN certificate renewal",
-            "group": "Hub Cube",
+            "group": "Renew VPN",
             "state_id": 4,
             "note": "UUID {uuid}".format(uuid=self.infos_user['uuid']),
             "customer_id": "guess:{email}".format(email=self.infos_user['email']),
             "article": {
                 "subject": "[Neutrinet] Renouvellement de votre certificat de connexion au VPN - VPN certificate renewal",
-                "to": "{firstname} {lastname} <{email}>".format(
+                "to": "\"{firstname} {lastname}\" <{email}>".format(
                     firstname=self.infos_user['firstname'],
                     lastname=self.infos_user['lastname'],
                     email=self.infos_user['email']
@@ -70,7 +70,7 @@ class SendEmail:
     def _add_tag(self):
         self.logger.debug('add tag in ticket ' + str(self.ticket.json()['id']) + ' for uuid : ' + self.infos_user['uuid'])
 
-        requests.get(
+        requests.post(
             self.zammad_url + '/api/v1/tags/add?object=Ticket&o_id=' + str(self.ticket.json()['id']) +'&item=certificate+renewal',
             headers={'Authorization': 'Token token=' + self.zammad_token}
         )
