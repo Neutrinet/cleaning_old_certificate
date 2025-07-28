@@ -30,6 +30,7 @@ if __name__ == '__main__':
 
     users_ago_2_months = get_users.find_user_interval(interval="- '2 months'")
     users_today = get_users.find_user_interval(interval="+ '0 day'")
+    users_in_15_days = get_users.find_user_interval(interval="+ '15 days'")
     users_in_2_months = get_users.find_user_interval(interval="+ '2 months'")
 
     for user_ago_2_months in users_ago_2_months:
@@ -46,6 +47,14 @@ if __name__ == '__main__':
             templates_dir=templates_dir,
             template="expire-today",
             infos_user=user_today,
+        )
+
+    for user_in_15_days in users_in_15_days:
+        SendEmail(
+            config=config["zammad"],
+            templates_dir=templates_dir,
+            template="expire-in-15-days",
+            infos_user=user_in_15_days,
         )
 
     for user_in_2_months in users_in_2_months:

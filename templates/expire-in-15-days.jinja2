@@ -1,0 +1,69 @@
+Bonjour {{ firstname }} {{ lastname }},
+
+Dans {{ delta_day }} jours, votre certificat de connexion au VPN de Neutrinet expirerera.
+À ce moment-là, vous (ou votre Brique Internet) ne pourrez plus vous y connecter.
+
+Pour résoudre ce souci, vous trouverez de la documentation sur cette page : https://wiki.neutrinet.be/fr/vpn/renew-cert
+Vous pouvez y jeter un œil dès maintenant afin de ne subir aucune coupure.
+
+Si vous utilisez Yunohost, vous devriez installer l'application Neutrinet pour que le certificat soit renouvelé automatiquement 30 jours avant son expiration.
+Cependant, si l'application Neutrinet est déjà installée, c'est qu'il y a sans doute un problème, car le certificat aurait dû être renouvellé automatiquement.
+Pour régler le problème, vous pouvez d'abord vérifier que l'application est bien à jour.
+
+Si vous avez des difficultés, nous vous proposons de passer à l'une de nos rencontres du 3e dimanche du mois.
+Vous pouvez également poser vos questions en répondant à ce message ou sur notre chat Mattermost (https://chat.neutrinet.be).
+
+Afin d'optimiser l'assignation des IPv4, les adresses dont le certificat a expiré et n'a pas été renouvelé depuis 3 mois seront libérées pour les futurs membres.
+Sans action de votre part, votre IP sera libérée le {{ remove_at.strftime("%d/%m/%Y") }}.
+
+Voici les informations que nous avons concernant ce certificat :
+    IPV4 : {{ ipv4 }}
+{%- if ipv6 %}
+    IPV6 : {{ ipv6 }}
+{%- endif %}
+
+Nous en profitons pour vous rappeler que le VPN fourni par Neutrinet est à prix libre (±10€/mois conseillé). Vous trouverez nos informations bancaires sur notre wiki (https://wiki.neutrinet.be/fr/administration/banks).
+
+Cordialement,
+L'équipe de Neutrinet asbl
+
+https://neutrinet.be
+https://chat.neutrinet.be
+https://wiki.neutrinet.be
+https://neutrinet.be/fr/#install-party
+
+======
+
+Hello {{ firstname }} {{ lastname }},
+
+In {{ delta_day }} days, your Neutrinet VPN certificate will expire.
+At that time, you (or your Internet Cube) will no longer be connected to the VPN.
+
+To solve this issue, you'll find some renewal instructions here: https://wiki.neutrinet.be/en/vpn/renew-cert
+You can take a look at them right now to avoid any interruption.
+
+If you are using Yunohost, you should install the Neutrinet application to automatically renew the VPN certificate 30 days before its expiration date.
+However, if the Neutrinet application is already installed, then there is a problem, because the certificate should have been renewed automatically.
+To fix this issue, you can first check that the application is up to date.
+
+If you encounter any trouble, Neutrinet's meetings are held every 3rd Sunday of the month.
+You can also ask us any question by replying to this email or on our Mattermost chat (https://chat.neutrinet.be).
+
+To optimize IPv4 assignments, addresses with invalid certificate for more than 3 months will be released and might be distributed to new members.
+Without any action on your part, your IP will be reassigned on {{ remove_at.strftime("%d/%m/%Y") }}.
+
+We have the following information regarding this certificate:
+    IPV4 : {{ ipv4 }}
+{%- if ipv6 %}
+    IPV6 : {{ ipv6 }}
+{%- endif %}
+
+We would like to remind you that this VPN is provided by Neutrinet with a pay what you want policy (±10€/month recommended). You'll find our bank details on our wiki (https://wiki.neutrinet.be/en/administration/banks).
+
+Sincerely,
+The Neutrinet asbl team
+
+https://neutrinet.be
+https://chat.neutrinet.be
+https://wiki.neutrinet.be
+https://neutrinet.be/en/#install-party
